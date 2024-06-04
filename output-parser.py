@@ -1,8 +1,8 @@
 import csv
 
 # Define the input and output file paths
-input_file_path = 'query6.txt'
-output_file_path = 'query6.csv'
+input_file_path = 'files/input/query6.txt'
+output_file_path = 'files/output/query6.csv'
 
 # Function to clean the timestamp
 def clean_timestamp(timestamp):
