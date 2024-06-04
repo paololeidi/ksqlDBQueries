@@ -1,0 +1,82 @@
+CREATE STREAM stressStream (
+    timestamp VARCHAR,
+    stressId INT,
+    status VARCHAR,
+    stressLevel INT
+  ) WITH (
+     KAFKA_TOPIC='stress',
+     VALUE_FORMAT='JSON',
+     timestamp = 'timestamp',
+    timestamp_format = 'yyyy-MM-dd HH:mm:ss'
+  );
+
+  CREATE STREAM weightStream (
+    timestamp VARCHAR,
+    weightId INT,
+    weight DOUBLE
+  ) WITH (
+     KAFKA_TOPIC='weight',
+     VALUE_FORMAT='JSON',
+     timestamp = 'timestamp',
+    timestamp_format = 'yyyy-MM-dd HH:mm:ss'
+  );
+
+  1.
+  SELECT
+  from_unixtime(WINDOWSTART) as window_start,
+  from_unixtime(WINDOWEND) as window_end,
+  avg(stressLevel) as avg_stress
+FROM stressStream
+  WINDOW TUMBLING (SIZE 10 SECONDS)
+  EMIT CHANGES;
+
+  2.
+  SELECT
+  from_unixtime(WINDOWSTART) as window_start,
+  from_unixtime(WINDOWEND) as window_end,
+  avg(stressLevel) as avg_stress
+FROM stressStream
+  WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 5 SECONDS)
+  EMIT CHANGES;
+
+  3.
+    SELECT
+  from_unixtime(WINDOWSTART) as window_start,
+  from_unixtime(WINDOWEND) as window_end,
+  avg(stressLevel) as avg_stress
+FROM stressStream
+  WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
+  EMIT CHANGES;
+
+  4.
+  SELECT
+  from_unixtime(WINDOWSTART) as window_start,
+  from_unixtime(WINDOWEND) as window_end,
+  stressId,
+  max(stressLevel) as max_stress
+FROM stressStream
+  WINDOW TUMBLING (SIZE 10 SECONDS)
+  GROUP BY stressId
+  EMIT CHANGES;
+
+  5.
+  SELECT
+  from_unixtime(WINDOWSTART) as window_start,
+  from_unixtime(WINDOWEND) as window_end,
+  stressId,
+  max(stressLevel) as max_stress
+FROM stressStream
+  WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 5 SECONDS)
+  GROUP BY stressId
+  EMIT CHANGES;
+
+  6.
+SELECT
+  from_unixtime(WINDOWSTART) as window_start,
+  from_unixtime(WINDOWEND) as window_end,
+  stressId,
+  max(stressLevel) as max_stress
+FROM stressStream
+  WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
+  GROUP BY stressId
+  EMIT CHANGES;
