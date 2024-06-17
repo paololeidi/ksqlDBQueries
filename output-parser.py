@@ -1,42 +1,45 @@
 import csv
 
 # Define the input and output file paths
-input_file_path = 'files/input/query6.txt'
-output_file_path = 'files/output/query6.csv'
+input_file_path = 'files/input/join.txt'
+output_file_path = 'files/output/join.csv'
+
+# Initialize variables to hold the data and control flags
+data_started = False
+data_lines = []
+delimiter_count = 0
 
 # Function to clean the timestamp
 def clean_timestamp(timestamp):
-    return timestamp.replace('.000', '').replace("T"," ")
+    return timestamp.replace('.000', '').replace("T"," ").replace(':00','')
 
-# Open the input file for reading
+# Open and read the input file
 with open(input_file_path, 'r') as file:
-    lines = file.readlines()
+    for line in file:
+        # Check for the start of data after the second line containing "+-------"
+        if '+-------' in line:
+            delimiter_count += 1
+            if delimiter_count == 2:
+                data_started = True
+            continue  # Skip this line
 
-# Find the starting and ending lines
-start_line = 15  # line index starts from 0, so line 16 is index 15
-end_line = None
+        if data_started:
+            if 'Query terminated' in line:
+                break  # Stop if we reach the "Query terminated" line
+            data_lines.append(line.strip())  # Collect data lines
 
-# Find the end line index
-for i, line in enumerate(lines):
-    if "Query terminated" in line:
-        end_line = i
-        break
+# Remove the headers line if it exists
+if data_lines and 'WINDOW_START' in data_lines[0]:
+    data_lines.pop(0)
 
-# Extract the relevant lines
-data_lines = lines[start_line:end_line]
-
-# Open the output file for writing
+# Write the parsed data to a CSV file
 with open(output_file_path, 'w', newline='') as csvfile:
     csvwriter = csv.writer(csvfile)
-    
-    # Write the data rows
     for line in data_lines:
-        if line.startswith('|'):
-            # Split the line by '|' and strip the whitespace
-            row = [item.strip() for item in line.split('|') if item.strip()]
-            # Clean the timestamps
-            row[0] = clean_timestamp(row[0])
-            row[1] = clean_timestamp(row[1])
-            csvwriter.writerow(row)
+        # Split the line by '|' and strip any extra spaces
+        row = [item.strip() for item in line.split('|') if item.strip()]
+        row[0] = clean_timestamp(row[0])
+        row[1] = clean_timestamp(row[1])
+        csvwriter.writerow(row)
 
-print(f"Data has been successfully written to {output_file_path}")
+print(f"Data successfully written to {output_file_path}")

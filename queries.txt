@@ -80,3 +80,7 @@ FROM stressStream
   WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
   GROUP BY stressId
   EMIT CHANGES;
+
+  7.
+  SELECT * FROM stressStream s INNER JOIN weightStream w
+  WITHIN 10 SECONDS ON s.stressId=w.weightId EMIT CHANGES;

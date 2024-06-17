@@ -1,7 +1,7 @@
-# ksqlDB Queries
+# ksqlDB Queriess
 
 ### 1. Open terminal in this directory and run:
-docker-compose up
+docker compose up
 
 ### 2. In another terminal, run the kafka container:
 docker exec -it broker /bin/bash
@@ -24,4 +24,8 @@ docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
 SPOOL filename.txt;
 
 SPOOL OFF to disable
-#### 4. Parse filename.txt with output-parser.py
+
+The file will be saved in the Docker container files (use Visual Studio code to get it easily)
+Containers/ksqldbqueriescli/ksqldb-cli/Files/home/appuser
+
+### 4. Parse filename.txt with output-parser.py
