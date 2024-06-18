@@ -1,8 +1,8 @@
 import csv
 
 # Define the input and output file paths
-input_file_path = 'files/input/join.txt'
-output_file_path = 'files/output/join.csv'
+input_file_path = 'files/input/query3.txt'
+output_file_path = 'files/output/output3.csv'
 
 # Initialize variables to hold the data and control flags
 data_started = False
