@@ -82,5 +82,12 @@ FROM stressStream
   EMIT CHANGES;
 
   7.
-  SELECT * FROM stressStream s INNER JOIN weightStream w
-  WITHIN 10 SECONDS ON s.stressId=w.weightId EMIT CHANGES;
+  SELECT
+    s.timestamp,
+    s.stressId,
+    s.status,
+    s.stressLevel,
+    w.timestamp,
+    w.weight
+  FROM stressStream s INNER JOIN weightStream w
+  WITHIN 5 SECONDS ON s.stressId=w.weightId EMIT CHANGES;

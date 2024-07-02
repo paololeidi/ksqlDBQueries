@@ -1,4 +1,4 @@
-# ksqlDB Queriess
+# ksqlDB Queries
 
 ### 1. Open terminal in this directory and run:
 docker compose up
@@ -28,4 +28,7 @@ SPOOL OFF to disable
 The file will be saved in the Docker container files (use Visual Studio code to get it easily)
 Containers/ksqldbqueriescli/ksqldb-cli/Files/home/appuser
 
-### 4. Parse filename.txt with output-parser.py
+### 4. Generate the stream with JsonStreamGenerator
+
+
+### 5. Parse filename.txt with output-parser.py

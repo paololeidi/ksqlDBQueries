@@ -1,13 +1,15 @@
 import csv
 
 # Define the input and output file paths
-input_file_path = 'files/input/query3.txt'
-output_file_path = 'files/output/output3.csv'
+input_file_path = 'files/input/join.txt'
+output_file_path = 'files/output/join.csv'
 
 # Initialize variables to hold the data and control flags
 data_started = False
 data_lines = []
 delimiter_count = 0
+
+joinQuery = True
 
 # Function to clean the timestamp
 def clean_timestamp(timestamp):
@@ -39,7 +41,11 @@ with open(output_file_path, 'w', newline='') as csvfile:
         # Split the line by '|' and strip any extra spaces
         row = [item.strip() for item in line.split('|') if item.strip()]
         row[0] = clean_timestamp(row[0])
-        row[1] = clean_timestamp(row[1])
+        if not joinQuery:
+            row[1] = clean_timestamp(row[1])
+        else:
+            row[4] = clean_timestamp(row[4])
+            row[5] = round(float(row[5]),2)
         csvwriter.writerow(row)
 
 print(f"Data successfully written to {output_file_path}")
