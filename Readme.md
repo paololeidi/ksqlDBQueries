@@ -18,17 +18,21 @@ kafka-topics --list --bootstrap-server localhost:9092
 ### 3. In another terminal, open the ksqlDB CLI:
 docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
 
-#### 3.1. Start executing queries in the CLI
+#### 3.1. In the CLI, reate streams if they don't exist
 
 #### 3.2. Write output on a file by executing the statement:
 SPOOL filename.txt;
 
 SPOOL OFF to disable
 
-The file will be saved in the Docker container files (use Visual Studio code to get it easily)
-Containers/ksqldbqueriescli/ksqldb-cli/Files/home/appuser
+#### 3.3. Start executing queries
+
+#### 3.4. Run JsonStreamGenerator class
 
 ### 4. Generate the stream with JsonStreamGenerator
 
+### 5. Download the file with the output to the project folder (files/input)
+The file is saved in the Docker container files (use Visual Studio code to get it easily)
+Containers/ksqldbqueriescli/ksqldb-cli/Files/home/appuser
 
-### 5. Parse filename.txt with output-parser.py
+### 6. Parse filename.txt with output-parser.py

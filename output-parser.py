@@ -1,15 +1,15 @@
 import csv
 
 # Define the input and output file paths
-input_file_path = 'files/input/join.txt'
-output_file_path = 'files/output/join.csv'
+input_file_path = 'files/input/query24.txt'
+output_file_path = 'files/output/output24.csv'
 
 # Initialize variables to hold the data and control flags
 data_started = False
 data_lines = []
 delimiter_count = 0
 
-joinQuery = True
+joinQuery = False
 
 # Function to clean the timestamp
 def clean_timestamp(timestamp):
