@@ -21,6 +21,18 @@ CREATE STREAM stressStream (
     timestamp_format = 'yyyy-MM-dd HH:mm:ss'
   );
 
+  CREATE STREAM outputStream (
+    windowOpen VARCHAR,
+    windowClose VARCHAR,
+    id INT,
+    maxStress INT
+  ) WITH (
+     KAFKA_TOPIC='output2',
+     VALUE_FORMAT='JSON',
+     timestamp = 'windowClose',
+    timestamp_format = 'yyyy-MM-dd HH:mm:ss'
+  );
+
   1.
   SELECT
   from_unixtime(WINDOWSTART) as window_start,
@@ -271,3 +283,16 @@ SELECT
     w.weight
 FROM stressStream s INNER JOIN weightStream w
 WITHIN 5 SECONDS ON s.stressId=w.weightId EMIT CHANGES;
+
+
+Third level query
+
+SELECT
+  from_unixtime(WINDOWSTART) as windowOpen,
+  from_unixtime(WINDOWEND) as windowClose,
+  id,
+  max(maxStress) as maxStress
+FROM outputStream
+  WINDOW TUMBLING (SIZE 5 SECONDS)
+  GROUP BY id
+  EMIT CHANGES;
