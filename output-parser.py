@@ -1,8 +1,8 @@
 import csv
 
 # Define the input and output file paths
-input_file_path = 'files/input/query24.txt'
-output_file_path = 'files/output/output24.csv'
+input_file_path = 'files/input/3/fast/flink-flink-ksqldb.txt'
+output_file_path = 'files/output/3/fast/flink-flink-ksqldb.csv'
 
 # Initialize variables to hold the data and control flags
 data_started = False
@@ -13,7 +13,7 @@ joinQuery = False
 
 # Function to clean the timestamp
 def clean_timestamp(timestamp):
-    return timestamp.replace('.000', '').replace("T"," ").replace(':00','')
+    return timestamp.replace('.000', '').replace("T"," ")
 
 # Open and read the input file
 with open(input_file_path, 'r') as file:

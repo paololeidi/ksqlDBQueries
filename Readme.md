@@ -18,7 +18,7 @@ kafka-topics --list --bootstrap-server localhost:9092
 ### 3. In another terminal, open the ksqlDB CLI:
 docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
 
-#### 3.1. In the CLI, reate streams if they don't exist
+#### 3.1. In the CLI, create streams if they don't exist
 
 #### 3.2. Write output on a file by executing the statement:
 SPOOL filename.txt;
@@ -26,8 +26,6 @@ SPOOL filename.txt;
 SPOOL OFF to disable
 
 #### 3.3. Start executing queries
-
-#### 3.4. Run JsonStreamGenerator class
 
 ### 4. Generate the stream with JsonStreamGenerator
 

@@ -293,6 +293,6 @@ SELECT
   id,
   max(maxStress) as maxStress
 FROM outputStream
-  WINDOW TUMBLING (SIZE 5 SECONDS)
+  WINDOW TUMBLING (SIZE 10 SECONDS)
   GROUP BY id
   EMIT CHANGES;
