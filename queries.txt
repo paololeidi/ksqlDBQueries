@@ -57,7 +57,7 @@ FROM stressStream
   from_unixtime(WINDOWEND) as window_end,
   max(stressLevel) as max_stress
 FROM stressStream
-  WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
+  WINDOW SESSION (5 SECONDS)
   EMIT CHANGES;
 
   4.
@@ -89,7 +89,7 @@ SELECT
   stressId,
   max(stressLevel) as max_stress
 FROM stressStream
-  WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
+  WINDOW SESSION (5 SECONDS)
   GROUP BY stressId
   EMIT CHANGES;
 
@@ -117,7 +117,7 @@ FROM stressStream
     from_unixtime(WINDOWEND) as window_end,
     min(stressLevel) as min_stress
   FROM stressStream
-    WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
+    WINDOW SESSION (5 SECONDS)
     EMIT CHANGES;
 
     10.
@@ -149,7 +149,7 @@ FROM stressStream
     stressId,
     min(stressLevel) as min_stress
   FROM stressStream
-    WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
+    WINDOW SESSION (5 SECONDS)
     GROUP BY stressId
     EMIT CHANGES;
 
@@ -177,7 +177,7 @@ FROM stressStream
         from_unixtime(WINDOWEND) as window_end,
         avg(weight) as avg_weight
     FROM weightStream
-        WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
+        WINDOW SESSION (5 SECONDS)
     EMIT CHANGES;
 
     16.
@@ -209,7 +209,7 @@ FROM stressStream
     weightId,
     avg(weight) as avg_weight
       FROM weightStream
-    WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
+    WINDOW SESSION (5 SECONDS)
     GROUP BY weightId
     EMIT CHANGES;
 
@@ -237,7 +237,7 @@ FROM weightStream
       from_unixtime(WINDOWEND) as window_end,
       count(*) as numberOfEvents
   FROM weightStream
-      WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
+      WINDOW SESSION (5 SECONDS)
   EMIT CHANGES;
 
   22.
@@ -269,7 +269,7 @@ SELECT
   weightId,
   count(*) as numberOfEvents
     FROM weightStream
-  WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 1 SECOND)
+  WINDOW SESSION (5 SECONDS)
   GROUP BY weightId
   EMIT CHANGES;
 
