@@ -1,8 +1,8 @@
 import csv
 
 # Define the input and output file paths
-input_file_path = 'files/input/3/fast/flink-flink-ksqldb.txt'
-output_file_path = 'files/output/3/fast/flink-flink-ksqldb.csv'
+input_file_path = 'files/input/1/query20.txt'
+output_file_path = 'files/output/Queries/output20.csv'
 
 # Initialize variables to hold the data and control flags
 data_started = False
@@ -38,6 +38,8 @@ if data_lines and 'WINDOW_START' in data_lines[0]:
 with open(output_file_path, 'w', newline='') as csvfile:
     csvwriter = csv.writer(csvfile)
     for line in data_lines:
+        if "TOMBSTONE" in line:
+            continue
         # Split the line by '|' and strip any extra spaces
         row = [item.strip() for item in line.split('|') if item.strip()]
         row[0] = clean_timestamp(row[0])

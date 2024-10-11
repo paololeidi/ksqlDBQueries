@@ -35,103 +35,85 @@ CREATE STREAM stressStream (
 
   1.
   SELECT
-  from_unixtime(WINDOWSTART) as window_start,
-  from_unixtime(WINDOWEND) as window_end,
-  max(stressLevel) as max_stress
+  from_unixtime(WINDOWSTART) AS window_start,
+  from_unixtime(WINDOWEND) AS window_end,
+  MAX(stressLevel) AS max_stress
 FROM stressStream
   WINDOW TUMBLING (SIZE 10 SECONDS)
   EMIT CHANGES;
 
   2.
   SELECT
-  from_unixtime(WINDOWSTART) as window_start,
-  from_unixtime(WINDOWEND) as window_end,
-  max(stressLevel) as max_stress
+  from_unixtime(WINDOWSTART) AS window_start,
+  from_unixtime(WINDOWEND) AS window_end,
+  MAX(stressLevel) AS max_stress
 FROM stressStream
   WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 5 SECONDS)
   EMIT CHANGES;
 
   3.
-    SELECT
-  from_unixtime(WINDOWSTART) as window_start,
-  from_unixtime(WINDOWEND) as window_end,
-  max(stressLevel) as max_stress
-FROM stressStream
-  WINDOW SESSION (5 SECONDS)
-  EMIT CHANGES;
-
-  4.
   SELECT
-  from_unixtime(WINDOWSTART) as window_start,
-  from_unixtime(WINDOWEND) as window_end,
+  from_unixtime(WINDOWSTART) AS window_start,
+  from_unixtime(WINDOWEND) AS window_end,
   stressId,
-  max(stressLevel) as max_stress
+  MAX(stressLevel) AS max_stress
 FROM stressStream
   WINDOW TUMBLING (SIZE 10 SECONDS)
   GROUP BY stressId
   EMIT CHANGES;
 
-  5.
+  4.
   SELECT
-  from_unixtime(WINDOWSTART) as window_start,
-  from_unixtime(WINDOWEND) as window_end,
+  from_unixtime(WINDOWSTART) AS window_start,
+  from_unixtime(WINDOWEND) AS window_end,
   stressId,
-  max(stressLevel) as max_stress
+  MAX(stressLevel) AS max_stress
 FROM stressStream
   WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 5 SECONDS)
   GROUP BY stressId
   EMIT CHANGES;
 
-  6.
+  5.
 SELECT
   from_unixtime(WINDOWSTART) as window_start,
   from_unixtime(WINDOWEND) as window_end,
   stressId,
-  max(stressLevel) as max_stress
+  MAX(stressLevel) AS max_stress
 FROM stressStream
-  WINDOW SESSION (5 SECONDS)
+  WINDOW SESSION (3 SECONDS)
   GROUP BY stressId
   EMIT CHANGES;
 
-  7.
+  6.
     SELECT
     from_unixtime(WINDOWSTART) as window_start,
     from_unixtime(WINDOWEND) as window_end,
-    min(stressLevel) as min_stress
+    MIN(stressLevel) AS min_stress
   FROM stressStream
     WINDOW TUMBLING (SIZE 10 SECONDS)
+    EMIT CHANGES;
+
+    7.
+    SELECT
+    from_unixtime(WINDOWSTART) as window_start,
+    from_unixtime(WINDOWEND) as window_end,
+    MIN(stressLevel) AS min_stress
+  FROM stressStream
+    WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 5 SECONDS)
     EMIT CHANGES;
 
     8.
     SELECT
     from_unixtime(WINDOWSTART) as window_start,
     from_unixtime(WINDOWEND) as window_end,
-    min(stressLevel) as min_stress
-  FROM stressStream
-    WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 5 SECONDS)
-    EMIT CHANGES;
-
-    9.
-      SELECT
-    from_unixtime(WINDOWSTART) as window_start,
-    from_unixtime(WINDOWEND) as window_end,
-    min(stressLevel) as min_stress
-  FROM stressStream
-    WINDOW SESSION (5 SECONDS)
-    EMIT CHANGES;
-
-    10.
-    SELECT
-    from_unixtime(WINDOWSTART) as window_start,
-    from_unixtime(WINDOWEND) as window_end,
     stressId,
-    min(stressLevel) as min_stress
+    MIN(stressLevel) AS min_stress
   FROM stressStream
     WINDOW TUMBLING (SIZE 10 SECONDS)
     GROUP BY stressId
     EMIT CHANGES;
 
-    11.
+    9.
     SELECT
     from_unixtime(WINDOWSTART) as window_start,
     from_unixtime(WINDOWEND) as window_end,
@@ -142,18 +124,18 @@ FROM stressStream
     GROUP BY stressId
     EMIT CHANGES;
 
-    12.
+    10.
   SELECT
     from_unixtime(WINDOWSTART) as window_start,
     from_unixtime(WINDOWEND) as window_end,
     stressId,
     min(stressLevel) as min_stress
   FROM stressStream
-    WINDOW SESSION (5 SECONDS)
+    WINDOW SESSION (3 SECONDS)
     GROUP BY stressId
     EMIT CHANGES;
 
-  13.
+  11.
     SELECT
     from_unixtime(WINDOWSTART) as window_start,
     from_unixtime(WINDOWEND) as window_end,
@@ -162,7 +144,7 @@ FROM stressStream
     WINDOW TUMBLING (SIZE 10 SECONDS)
     EMIT CHANGES;
 
-    14.
+    12.
     SELECT
         from_unixtime(WINDOWSTART) as window_start,
         from_unixtime(WINDOWEND) as window_end,
@@ -171,16 +153,7 @@ FROM stressStream
         WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 5 SECONDS)
     EMIT CHANGES;
 
-    15.
-    SELECT
-        from_unixtime(WINDOWSTART) as window_start,
-        from_unixtime(WINDOWEND) as window_end,
-        avg(weight) as avg_weight
-    FROM weightStream
-        WINDOW SESSION (5 SECONDS)
-    EMIT CHANGES;
-
-    16.
+    13.
     SELECT
         from_unixtime(WINDOWSTART) as window_start,
         from_unixtime(WINDOWEND) as window_end,
@@ -191,7 +164,7 @@ FROM stressStream
     GROUP BY weightId
     EMIT CHANGES;
 
-    17.
+    14.
     SELECT
     from_unixtime(WINDOWSTART) as window_start,
     from_unixtime(WINDOWEND) as window_end,
@@ -202,18 +175,18 @@ FROM stressStream
     GROUP BY weightId
     EMIT CHANGES;
 
-    18.
+    15.
   SELECT
     from_unixtime(WINDOWSTART) as window_start,
     from_unixtime(WINDOWEND) as window_end,
     weightId,
     avg(weight) as avg_weight
       FROM weightStream
-    WINDOW SESSION (5 SECONDS)
+    WINDOW SESSION (3 SECONDS)
     GROUP BY weightId
     EMIT CHANGES;
 
-  19.
+  16.
   SELECT
   from_unixtime(WINDOWSTART) as window_start,
   from_unixtime(WINDOWEND) as window_end,
@@ -222,7 +195,7 @@ FROM weightStream
   WINDOW TUMBLING (SIZE 10 SECONDS)
   EMIT CHANGES;
 
-  20.
+  17.
   SELECT
       from_unixtime(WINDOWSTART) as window_start,
       from_unixtime(WINDOWEND) as window_end,
@@ -231,16 +204,7 @@ FROM weightStream
       WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 5 SECONDS)
   EMIT CHANGES;
 
-  21.
-  SELECT
-      from_unixtime(WINDOWSTART) as window_start,
-      from_unixtime(WINDOWEND) as window_end,
-      count(*) as numberOfEvents
-  FROM weightStream
-      WINDOW SESSION (5 SECONDS)
-  EMIT CHANGES;
-
-  22.
+  18.
   SELECT
       from_unixtime(WINDOWSTART) as window_start,
       from_unixtime(WINDOWEND) as window_end,
@@ -251,7 +215,7 @@ FROM weightStream
   GROUP BY weightId
   EMIT CHANGES;
 
-  23.
+  19.
   SELECT
   from_unixtime(WINDOWSTART) as window_start,
   from_unixtime(WINDOWEND) as window_end,
@@ -262,14 +226,14 @@ FROM weightStream
   GROUP BY weightId
   EMIT CHANGES;
 
-  24.
+  20.
 SELECT
   from_unixtime(WINDOWSTART) as window_start,
   from_unixtime(WINDOWEND) as window_end,
   weightId,
   count(*) as numberOfEvents
     FROM weightStream
-  WINDOW SESSION (5 SECONDS)
+  WINDOW SESSION (3 SECONDS)
   GROUP BY weightId
   EMIT CHANGES;
 
