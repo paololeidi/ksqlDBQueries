@@ -170,8 +170,8 @@ FROM stressStream
     from_unixtime(WINDOWEND) as window_end,
     weightId,
     avg(weight) as avg_weight
-      FROM weightStream
-    WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 5 SECONDS)
+    FROM weightStream
+        WINDOW HOPPING (SIZE 10 SECONDS, ADVANCE BY 5 SECONDS)
     GROUP BY weightId
     EMIT CHANGES;
 
